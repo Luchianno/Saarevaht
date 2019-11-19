@@ -20,7 +20,7 @@ public class UndoSystem
         redo.Clear();
     }
 
-    public void Do(Command cmd, object input)
+    public void Do(AbstractCommand cmd, object input)
     {
         cmd.Do(context, input);
         undo.Push(new CommandInstance());

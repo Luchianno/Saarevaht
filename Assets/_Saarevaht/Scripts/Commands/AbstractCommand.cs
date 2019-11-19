@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Command
+public abstract class AbstractCommand
 {
-    //LevelEditorContext context
     public abstract void Do(object context, object target);
 
-
-    // Update is called once per frame
     public abstract void Undo(object context);
 }

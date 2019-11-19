@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CommandInstance
 {
-    public Command Command { get; protected set; }
+    public AbstractCommand Command { get; protected set; }
 
     public object Context;
     public object Target;

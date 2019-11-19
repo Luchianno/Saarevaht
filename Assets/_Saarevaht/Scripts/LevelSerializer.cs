@@ -11,9 +11,11 @@ public class LevelSerializer : MonoBehaviour
     [Inject]
     AppSettings settings;
 
-    void Deserialize()
+    LevelData Deserialize()
     {
-
+        var path = "";
+        var json = File.ReadAllText(path);
+        return JsonConvert.DeserializeObject<LevelData>(json);
     }
 
     // Update is called once per frame
