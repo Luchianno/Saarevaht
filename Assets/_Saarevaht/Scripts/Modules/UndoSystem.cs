@@ -5,11 +5,13 @@ using Zenject;
 
 public class UndoSystem
 {
+    public int MaxSize = 100;
+
     public int UndoCount => undo.Count;
     public int RedoCount => redo.Count;
 
-    Stack<CommandInstance> undo = new Stack<CommandInstance>();
-    Stack<CommandInstance> redo = new Stack<CommandInstance>();
+    LinkedList<CommandInstance> undo = new LinkedList<CommandInstance>();
+    LinkedList<CommandInstance> redo = new LinkedList<CommandInstance>();
 
     [Inject]
     object context;
@@ -22,8 +24,14 @@ public class UndoSystem
 
     public void Do(AbstractCommand cmd, object input)
     {
+        if (undo.Count == MaxSize)
+        {
+            // TODO needs disposing?
+            undo.RemoveFirst();
+        }
+
         cmd.Do(context, input);
-        undo.Push(new CommandInstance());
+        undo.AddLast(new CommandInstance());
         redo.Clear(); // Once we issue a new command, the redo stack clears
     }
     public void Undo()
@@ -34,9 +42,17 @@ public class UndoSystem
             return;
         }
 
-        CommandInstance cmd = undo.Pop();
+        CommandInstance cmd = undo.Last.Value;
+        undo.RemoveLast();
+        // TODO
         // cmd.Undo();
-        redo.Push(cmd);
+
+        if (redo.Count == MaxSize)
+        {
+            redo.RemoveFirst();
+        }
+
+        redo.AddLast(cmd);
     }
 
     public void Redo()
@@ -47,9 +63,19 @@ public class UndoSystem
             return;
         }
 
-        var cmd = redo.Pop();
+        var cmd = redo.Last.Value;
+        redo.RemoveLast();
         // cmd.Do();
-        undo.Push(cmd);
+
+        // this should not happen right? because it's redo
+        // but anyway
+        if (undo.Count == MaxSize)
+        {
+            // TODO needs disposing?
+            undo.RemoveFirst();
+        }
+
+        undo.AddLast(cmd);
     }
 
 }

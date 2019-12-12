@@ -6,12 +6,14 @@ using Zenject;
 
 public class AddObjectToScene : AbstractCommand
 {
-    public AddObjectToScene([Inject(Id = "SceneData")]Transform SceneData)
+    ObjectInstance.Factory factory;
+
+    ObjectInstance instance;
+
+    public AddObjectToScene(ObjectInstance.Factory objectInstanceFactory)
     {
-
+        this.factory = objectInstanceFactory;
     }
-
-
 
     public override void Do(object context, object target)
     {
