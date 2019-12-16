@@ -20,17 +20,14 @@ public class AddObjectToScene : AbstractCommand
         Utils.IsType<LevelEditorState>(context);
         Utils.IsType<PrefabInstance>(context);
 
-        // var prefab = target as PrefabInstance;
+        var prefab = target as PrefabInstance;
 
-        // TODO position?
-
-        // var = GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity)
-
-        // context.
+        instance = factory.Create(prefab.ReferencedPrefab);
+        instance.Position = Vector3.zero; // TODO change spawn position
     }
 
     public override void Undo(object context)
     {
-        throw new System.NotImplementedException();
+        instance.Dispose();
     }
 }

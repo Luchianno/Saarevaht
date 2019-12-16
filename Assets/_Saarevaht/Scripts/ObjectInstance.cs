@@ -6,7 +6,7 @@ using Zenject;
 using Newtonsoft.Json;
 
 [Serializable]
-public class ObjectInstance: IDisposable
+public class ObjectInstance : IDisposable
 {
     public Guid Id;
     public string PrefabId;
@@ -24,8 +24,22 @@ public class ObjectInstance: IDisposable
     [NonSerialized]
     public GameObject SceneObject;
 
-    public class Factory : PlaceholderFactory<ObjectInstance>
+    public ObjectInstance(GameObject prefab, Vector3 position = default, Quaternion rotation = default) : this(prefab, Guid.NewGuid(), position, rotation) { }
+
+    public ObjectInstance(GameObject prefab, Guid guid, Vector3 position = default, Quaternion rotation = default)
     {
+        Id = guid;
+        GameObject.Instantiate(prefab);
+    }
+
+    public class Factory : PlaceholderFactory<GameObject, ObjectInstance>
+    {
+        public override ObjectInstance Create(GameObject param)
+        {
+            var result = base.Create(param);
+            result.Id = Guid.NewGuid();
+            return result;
+        }
     }
 
     public void Dispose()
