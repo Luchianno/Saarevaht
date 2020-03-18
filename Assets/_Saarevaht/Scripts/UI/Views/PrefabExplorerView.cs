@@ -18,13 +18,16 @@ public class PrefabExplorerView : MonoBehaviour
 
     [SerializeField]
     RectTransform previewParent;
-    // ScrollRect scrollRect;
     [SerializeField]
     ToggleListView categoriesView;
 
     public void Start()
     {
         categoriesView.ToggleListChanged += OnSelectedCategoriesChanged;
+        foreach (RectTransform item in previewParent)
+        {
+            Destroy(item.gameObject);
+        }
     }
 
     private void OnSelectedCategoriesChanged()
@@ -48,6 +51,7 @@ public class PrefabExplorerView : MonoBehaviour
         foreach (var item in prefabs)
         {
             var temp = previewFactory.Create(item, previewParent);
+            temp.OnClick += OnItemClicked;
             previewList.Add(temp);
 
             categories.Add(item.Category);
@@ -61,6 +65,11 @@ public class PrefabExplorerView : MonoBehaviour
         categoriesView.Load(categories);
         // scrollRect.verticalNormalizedPosition = 1; // scroll up
         // reset layout elements?
+    }
+
+    private void OnItemClicked(PrefabInstanceView obj)
+    {
+        Debug.Log(obj.Data.name + "clicked");
     }
 
     public void Clear()

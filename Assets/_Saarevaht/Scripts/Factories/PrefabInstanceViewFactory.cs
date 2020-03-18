@@ -16,7 +16,7 @@ public class PrefabInstanceViewFactory : IFactory<PrefabInstance, RectTransform,
 
     public PrefabInstanceView Create(PrefabInstance param, RectTransform parent)
     {
-        var temp = container.InstantiatePrefabForComponent<PrefabInstanceView>(prefab, parent);
+        var temp = container.InstantiatePrefabForComponent<PrefabInstanceView>(prefab, (Transform)parent);
         temp.Data = param;
         return temp;
     }

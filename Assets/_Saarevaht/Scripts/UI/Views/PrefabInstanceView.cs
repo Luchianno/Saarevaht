@@ -12,6 +12,10 @@ public class PrefabInstanceView : MonoBehaviour
     TextMeshProUGUI title;
     [SerializeField]
     Image preview;
+    [SerializeField]
+    Button button;
+
+    public Action<PrefabInstanceView> OnClick;
 
     public PrefabInstance Data
     {
@@ -24,6 +28,11 @@ public class PrefabInstanceView : MonoBehaviour
     }
 
     PrefabInstance data;
+
+    void Start()
+    {
+        button.onClick.AddListener(() => OnClick?.Invoke(this));
+    }
 
     public void UpdateView()
     {
