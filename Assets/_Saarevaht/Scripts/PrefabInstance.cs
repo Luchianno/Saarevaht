@@ -10,7 +10,8 @@ public class PrefabInstance : ScriptableObject
 
     public GameObject ReferencedPrefab;
 
-    public HashSet<string> Tags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    public List<string> Tags;
 
     public string Category;
+    
 }

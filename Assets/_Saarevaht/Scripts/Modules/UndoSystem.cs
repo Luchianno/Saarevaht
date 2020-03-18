@@ -14,7 +14,7 @@ public class UndoSystem
     LinkedList<CommandInstance> redo = new LinkedList<CommandInstance>();
 
     [Inject]
-    object context;
+    protected object context;
 
     public void Reset()
     {

@@ -4,9 +4,15 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class LevelData
+public class LevelData: IDisposable
 {
+    [SerializeField]
     public string Version = "1";
 
     public List<ObjectInstance> Items;
+
+    public void Dispose()
+    {
+        // throw new NotImplementedException();
+    }
 }

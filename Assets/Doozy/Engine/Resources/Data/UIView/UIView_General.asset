@@ -19,3 +19,5 @@ MonoBehaviour:
   - PrefabExplorerView
   - InspectorView
   - MenuBarView
+  - DebugView
+  - SceneView

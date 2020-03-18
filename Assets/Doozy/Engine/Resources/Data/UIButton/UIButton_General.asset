@@ -17,3 +17,7 @@ MonoBehaviour:
   Names:
   - Back
   - Unnamed
+  - NewProject
+  - SaveProject
+  - SaveProjectAs
+  - LoadProject

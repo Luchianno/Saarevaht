@@ -34,7 +34,7 @@ MonoBehaviour:
     Textures: []
     Fonts: []
     FontAssets:
-    - m_fontAsset: {fileID: 11400000, guid: 4e0baae8dbca1b246bffa99f71af705b, type: 2}
+    - m_fontAsset: {fileID: 0}
       SerializedGuid: 59b5fc9a5e73924bbf60f37e1dc1ef47
   ColorLabels:
   - m_label: Primary
@@ -77,5 +77,5 @@ MonoBehaviour:
     Textures: []
     Fonts: []
     FontAssets:
-    - m_fontAsset: {fileID: 11400000, guid: 4e0baae8dbca1b246bffa99f71af705b, type: 2}
+    - m_fontAsset: {fileID: 0}
       SerializedGuid: 59b5fc9a5e73924bbf60f37e1dc1ef47

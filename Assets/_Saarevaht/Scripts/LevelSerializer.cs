@@ -6,22 +6,21 @@ using System.IO;
 using Newtonsoft.Json;
 using Zenject;
 
-public class LevelSerializer : MonoBehaviour
+public class LevelSerializer : MonoBehaviour, ILevelSerializer
 {
     [Inject]
     AppSettings settings;
 
-    LevelData Deserialize()
+    public LevelData Deserialize(string path)
     {
-        var path = "";
+        // var path = "";
         var json = File.ReadAllText(path);
         return JsonConvert.DeserializeObject<LevelData>(json);
     }
 
     // Update is called once per frame
-    void Serialize(LevelData level)
+    public void Serialize(LevelData level, string path)
     {
-        var path = "";
         var serialized = JsonConvert.SerializeObject(level, Formatting.Indented);
         File.WriteAllText(path, serialized);
     }

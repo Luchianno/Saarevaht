@@ -8,6 +8,5 @@ public class LevelEditorState
 {
     public LevelData LevelData;
 
-    
      
 }

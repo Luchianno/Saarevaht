@@ -8,6 +8,7 @@ public class ProjectInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        Container.BindInstance<AppSettings>(settings);
+        Container.Bind<AppSettings>().FromNewScriptableObject(settings).AsSingle();
+        Container.Bind<string>().WithId("CurrentPath").AsSingle();
     }
 }

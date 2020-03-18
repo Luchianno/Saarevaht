@@ -17,5 +17,9 @@ public class CommandsInstaller : MonoInstaller
         Container.DeclareSignal<CommandSignal>().WithId("SelectObject");
         Container.DeclareSignal<CommandSignal>().WithId("DeselectAll");
         Container.DeclareSignal<CommandSignal>().WithId("ChangeObjectPosition");
+
+        Container.DeclareSignal<string>().WithId("LoadLevel");
+        Container.DeclareSignal<string>().WithId("SaveLevel");
+        Container.DeclareSignal<string>().WithId("SaveLevelAs");
     }
 }
