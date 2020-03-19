@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.78431374, g: 0.85490197, b: 0.827451, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -256,9 +256,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54cf8c4b916540e6abe8991db870c45f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ThemeIdSerializedGuid: 6f5cb9cce98d584bb93fc795f49efc8f
+  ThemeIdSerializedGuid: a27c0044dc8cb848bf3108b6b0d903bd
   VariantIdSerializedGuid: 
-  PropertyIdSerializedGuid: 4e6b34a134ee954d9962c549d30388b9
+  PropertyIdSerializedGuid: 694be63e7de2c94fbbb89f91490c0fde
   Image: {fileID: 270585594841636581}
   OverrideAlpha: 0
   Alpha: 0
@@ -312,7 +312,7 @@ MonoBehaviour:
   onToggleChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &7492517407246230136
 GameObject:
   m_ObjectHideFlags: 0

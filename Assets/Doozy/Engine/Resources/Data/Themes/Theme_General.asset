@@ -30,10 +30,14 @@ MonoBehaviour:
       SerializedGuid: baf65855326fe54e9f0935ab934a78b8
     - m_color: {r: 1, g: 1, b: 1, a: 1}
       SerializedGuid: 6241cf0f3988974aad95b2bacf05dca7
+    - m_color: {r: 0, g: 0, b: 0, a: 1}
+      SerializedGuid: c163d8774d31ab43a6f6cfaf9ec02f7f
     Sprites: []
     Textures: []
     Fonts: []
-    FontAssets: []
+    FontAssets:
+    - m_fontAsset: {fileID: 11400000, guid: 4e0baae8dbca1b246bffa99f71af705b, type: 2}
+      SerializedGuid: e682d41f9ceaf14b90da1b46cdbab5b1
   ColorLabels:
   - m_label: Primary
     SerializedGuid: 694be63e7de2c94fbbb89f91490c0fde
@@ -47,10 +51,14 @@ MonoBehaviour:
     SerializedGuid: baf65855326fe54e9f0935ab934a78b8
   - m_label: Disabled
     SerializedGuid: 6241cf0f3988974aad95b2bacf05dca7
+  - m_label: Black
+    SerializedGuid: c163d8774d31ab43a6f6cfaf9ec02f7f
   SpriteLabels: []
   TextureLabels: []
   FontLabels: []
-  FontAssetLabels: []
+  FontAssetLabels:
+  - m_label: General
+    SerializedGuid: e682d41f9ceaf14b90da1b46cdbab5b1
   VariantsNames:
   - Default
   Variants:
@@ -69,7 +77,11 @@ MonoBehaviour:
       SerializedGuid: baf65855326fe54e9f0935ab934a78b8
     - m_color: {r: 1, g: 1, b: 1, a: 1}
       SerializedGuid: 6241cf0f3988974aad95b2bacf05dca7
+    - m_color: {r: 0, g: 0, b: 0, a: 1}
+      SerializedGuid: c163d8774d31ab43a6f6cfaf9ec02f7f
     Sprites: []
     Textures: []
     Fonts: []
-    FontAssets: []
+    FontAssets:
+    - m_fontAsset: {fileID: 11400000, guid: 4e0baae8dbca1b246bffa99f71af705b, type: 2}
+      SerializedGuid: e682d41f9ceaf14b90da1b46cdbab5b1

@@ -4,65 +4,55 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Zenject;
 
-[RequireComponent(typeof(ToggleGroup))]
-public class ToggleListView : MonoBehaviour
+public class ToggleListView : UIElementList<ExtensionsToggle>
 {
+    public bool ToggleOnByDefault = true;
+
     public ICollection<string> ActiveToggles => activeToggles;
 
     public event Action ToggleListChanged;
 
-    [SerializeField]
-    GameObject prefab;
+    protected HashSet<string> activeToggles = new HashSet<string>();
 
-    [SerializeField]
-    RectTransform parent;
+    protected Dictionary<ExtensionsToggle, string> pairs = new Dictionary<ExtensionsToggle, string>();
 
-    HashSet<string> activeToggles = new HashSet<string>();
-    Dictionary<ExtensionsToggle, string> cache = new Dictionary<ExtensionsToggle, string>();
-
-    public void Clear()
+    public override void Clear()
     {
-        foreach (RectTransform item in parent)
-        {
-            Destroy(item.gameObject);
-        }
-
-        foreach (var item in cache.Keys)
-        {
-            Destroy(item.gameObject);
-        }
-        cache.Clear();
+        base.Clear();
 
         activeToggles.Clear();
     }
 
     public void Load(IEnumerable<string> list)
     {
-        Clear();
-
-        foreach (var item in list)
+        base.Load<string>(list, (obj, label) =>
         {
-            var temp = Instantiate(prefab, parent, false);
-            var toggle = temp.GetComponent<ExtensionsToggle>();
-            var textComponent = temp.GetComponentInChildren<TextMeshProUGUI>();
-
+            var toggle = obj.GetComponent<ExtensionsToggle>();
+            var textComponent = obj.GetComponentInChildren<TextMeshProUGUI>();
+                        
             toggle.onToggleChanged.AddListener(OnToggleChanged);
-            textComponent.text = item;
+            toggle.IsOn = ToggleOnByDefault;
 
-            cache.Add(toggle, item);
-        }
+            pairs.Add(toggle, label);
+
+            OnToggleChanged(toggle); // we need to manually call this for initialization
+
+            textComponent.text = label;
+        });
+
     }
 
     void OnToggleChanged(ExtensionsToggle toggle)
     {
         if (toggle.IsOn)
         {
-            activeToggles.Add(cache[toggle]);
+            activeToggles.Add(pairs[toggle]);
         }
         else
         {
-            activeToggles.Remove(cache[toggle]);
+            activeToggles.Remove(pairs[toggle]);
         }
 
         ToggleListChanged?.Invoke();

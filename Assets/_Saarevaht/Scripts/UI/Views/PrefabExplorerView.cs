@@ -4,12 +4,13 @@ using UnityEngine;
 using Zenject;
 using UnityEngine.UI;
 using System;
+using System.Linq;
+using TMPro;
 
 [DisallowMultipleComponent]
-public class PrefabExplorerView : MonoBehaviour
+public class PrefabExplorerView : UIElementList<PrefabInstanceView>
 {
-    List<PrefabInstance> cache = new List<PrefabInstance>();
-    List<PrefabInstanceView> previewList = new List<PrefabInstanceView>();
+    List<PrefabInstance> data = new List<PrefabInstance>();
     HashSet<string> categories = new HashSet<string>();
     HashSet<string> tags = new HashSet<string>();
 
@@ -17,27 +18,36 @@ public class PrefabExplorerView : MonoBehaviour
     protected PrefabInstanceView.Factory previewFactory;
 
     [SerializeField]
+    TMP_InputField inputField;
+    [SerializeField]
     RectTransform previewParent;
     [SerializeField]
     ToggleListView categoriesView;
+    [SerializeField]
+    ToggleListView tagsView;
 
     public void Start()
     {
-        categoriesView.ToggleListChanged += OnSelectedCategoriesChanged;
-        foreach (RectTransform item in previewParent)
-        {
-            Destroy(item.gameObject);
-        }
+        categoriesView.ToggleListChanged += OnFilterParamsChanged;
+        tagsView.ToggleListChanged += OnFilterParamsChanged;
+        inputField.onValueChanged.AddListener(_ => OnFilterParamsChanged());// += OnInputFieldValueChanged;
     }
 
-    private void OnSelectedCategoriesChanged()
+    void OnInputFieldValueChanged(string value)
+    {
+
+    }
+
+    private void OnFilterParamsChanged()
     {
         // disable layout
 
         // disable elements with wrong category
-        foreach (var item in previewList)
+        foreach (var item in cache)
         {
-            item.gameObject.SetActive(categoriesView.ActiveToggles.Contains(item.Data.Category));
+            item.gameObject.SetActive(categoriesView.ActiveToggles.Contains(item.Data.Category)
+                && tagsView.ActiveToggles.Intersect(item.Data.Tags).Any()
+                && (string.IsNullOrWhiteSpace(inputField.text) || item.Data.Name.Contains(inputField.text, StringComparison.InvariantCultureIgnoreCase)));
         }
 
         // enable layout
@@ -45,24 +55,17 @@ public class PrefabExplorerView : MonoBehaviour
 
     public void Load(IEnumerable<PrefabInstance> prefabs)
     {
-        Clear();
-
-        cache.AddRange(prefabs);
-        foreach (var item in prefabs)
+        base.Load<PrefabInstance>(prefabs, (component, param) =>
         {
-            var temp = previewFactory.Create(item, previewParent);
-            temp.OnClick += OnItemClicked;
-            previewList.Add(temp);
+            component.Data = param;
+            component.OnClick += OnItemClicked;
 
-            categories.Add(item.Category);
-
-            foreach (var tag in item.Tags)
-            {
-                tags.Add(tag);
-            }
-        }
+            categories.Add(param.Category);
+            tags.UnionWith(param.Tags);
+        });
 
         categoriesView.Load(categories);
+        tagsView.Load(tags);
         // scrollRect.verticalNormalizedPosition = 1; // scroll up
         // reset layout elements?
     }
@@ -72,19 +75,15 @@ public class PrefabExplorerView : MonoBehaviour
         Debug.Log(obj.Data.name + "clicked");
     }
 
-    public void Clear()
+    public override void Clear()
     {
+        base.Clear();
+
         categories.Clear();
         tags.Clear();
-
-        cache.Clear();
-
-        foreach (var item in previewList)
-        {
-            Destroy(item.gameObject);
-        }
-        previewList.Clear();
+        data.Clear();
 
         categoriesView.Clear();
+        tagsView.Clear();
     }
 }
