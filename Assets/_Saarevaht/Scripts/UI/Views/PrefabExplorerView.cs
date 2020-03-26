@@ -16,6 +16,8 @@ public class PrefabExplorerView : UIElementList<PrefabInstanceView>
 
     [Inject]
     protected PrefabInstanceView.Factory previewFactory;
+    [Inject]
+    protected SignalBus signalBus;
 
     [SerializeField]
     TMP_InputField inputField;
@@ -33,10 +35,6 @@ public class PrefabExplorerView : UIElementList<PrefabInstanceView>
         inputField.onValueChanged.AddListener(_ => OnFilterParamsChanged());// += OnInputFieldValueChanged;
     }
 
-    void OnInputFieldValueChanged(string value)
-    {
-
-    }
 
     private void OnFilterParamsChanged()
     {
@@ -73,6 +71,11 @@ public class PrefabExplorerView : UIElementList<PrefabInstanceView>
     private void OnItemClicked(PrefabInstanceView obj)
     {
         Debug.Log(obj.Data.name + "clicked");
+        signalBus.Fire<CommandSignal>(new CommandSignal()
+        {
+            Name = "AddObjectToScene",
+            Target = obj.Data
+        });
     }
 
     public override void Clear()
