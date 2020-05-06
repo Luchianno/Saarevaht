@@ -6,14 +6,14 @@ using Zenject;
 
 public class AddObjectToScene : AbstractCommand
 {
-    ObjectInstance.Factory factory;
+    // ObjectInstance.Factory factory;
 
     ObjectInstance instance;
 
-    public AddObjectToScene(ObjectInstance.Factory objectInstanceFactory)
-    {
-        this.factory = objectInstanceFactory;
-    }
+    // public AddObjectToScene(ObjectInstance.Factory objectInstanceFactory)
+    // {
+    //     this.factory = objectInstanceFactory;
+    // }
 
     public override void Do(object context, object target)
     {
@@ -22,7 +22,7 @@ public class AddObjectToScene : AbstractCommand
 
         var prefab = target as PrefabInstance;
 
-        instance = factory.Create(prefab.ReferencedPrefab);
+        instance = new ObjectInstance(prefab.);// factory.Create(prefab.ReferencedPrefab);
         instance.Position = Vector3.zero; // TODO change spawn position
     }
 

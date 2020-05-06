@@ -4,45 +4,85 @@ using UnityEngine;
 using System;
 using Zenject;
 using Newtonsoft.Json;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 [Serializable]
 public class ObjectInstance : IDisposable
 {
-    public Guid Id { get; protected set; }
+    public Guid Guid { get; protected set; }
     public string PrefabId { get; protected set; }
     public Vector3 Position
     {
-        get { return SceneObject.transform.position; }
-        set { SceneObject.transform.position = value; }
+        get { return position; }
+        set
+        {
+            position = value;
+            UpdateReferencedObject();
+        }
     }
 
     public Quaternion Rotation
     {
-        get { return SceneObject.transform.rotation; }
-        set { SceneObject.transform.rotation = value; }
+        get { return rotation; }
+        set
+        {
+            rotation = value;
+            UpdateReferencedObject();
+        }
     }
 
     [JsonIgnore]
     public GameObject SceneObject { get; protected set; }
 
-    public ObjectInstance(GameObject prefab, Vector3 position = default, Quaternion rotation = default) : this(prefab, Guid.NewGuid(), position, rotation) { }
+    Vector3 position;
+    Quaternion rotation;
+
+    public ObjectInstance(string prefabId, Vector3 position = default, Quaternion rotation = default) : this(prefabId, Guid.NewGuid(), position, rotation) { }
 
     [JsonConstructor]
-    public ObjectInstance(GameObject prefab, Guid guid, Vector3 position = default, Quaternion rotation = default)
+    public ObjectInstance(string prefabId, Guid guid, Vector3 position = default, Quaternion rotation = default)
     {
-        Id = guid;
-        GameObject.Instantiate(prefab, position, rotation);
+        this.PrefabId = prefabId;
+        this.Guid = guid;
+        this.Position = position;
+        this.Rotation = rotation;
     }
 
-    public class Factory : PlaceholderFactory<GameObject, ObjectInstance>
+    public void CreateSceneObject()
     {
-        public override ObjectInstance Create(GameObject param)
+        Addressables.Instance.InstantiateAsync<GameObject>(PrefabId, position, rotation).Completed += ObjectLoaded;
+        // GameObject.Instantiate(this.Prefab, position, rotation);
+    }
+
+    private void ObjectLoaded(AsyncOperationHandle<GameObject> obj)
+    {
+        if (obj.Result == null)
         {
-            var result = base.Create(param);
-            result.Id = Guid.NewGuid();
-            return result;
+            Debug.LogError("load fail");
+            return;
+        }
+
+        this.SceneObject = obj.Result;
+    }
+
+    public void UpdateReferencedObject()
+    {
+        if (SceneObject != null)
+        {
+            SceneObject.transform.SetPositionAndRotation(position, rotation);
         }
     }
+
+    // public class Factory : PlaceholderFactory<GameObject, ObjectInstance>
+    // {
+    //     public override ObjectInstance Create(GameObject param)
+    //     {
+    //         var result = base.Create(param);
+    //         result.Id = Guid.NewGuid();
+    //         return result;
+    //     }
+    // }
 
     public void Dispose()
     {
